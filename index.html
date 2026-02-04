@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบลงคะแนนเลือกตั้ง</title>
+
+<style>
+body{
+  font-family:'Kanit',sans-serif;
+  background:linear-gradient(135deg,#ffb6d5,#9ad9ff);
+  margin:0;
+  padding:20px;
+}
+
+/* โลโก้ */
+.school-logo{
+  position:fixed;
+  top:20px;
+  left:20px;
+  width:120px;
+  z-index:2000;
+}
+
+/* layout หลัก */
+.main-layout{
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  margin-top:90px;
+}
+
+/* ผู้สมัคร 4 เบอร์ */
+.candidate-container{
+  display:grid;
+  grid-template-columns:repeat(2,300px);
+  gap:30px;
+}
+
+/* การ์ดทั่วไป */
+.candidate-card{
+  background:#fff;
+    top:-60px;
+    left:50px;
+  border-radius:18px;
+  width:300px;
+  height:300px;
+  box-shadow:0 10px 24px rgba(0,0,0,.15);
+  cursor:pointer;
+  transition:.25s;
+  position:relative;
+  border:3px solid white;
+  overflow:hidden; /* 🔥 ตัดรูปไม่ให้ล้น */
+}
+.candidate-card:hover{
+  transform:translateY(-5px);
+  border-color:#007bff;
+}
+
+.candidate-no{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#007bff;
+  color:#fff;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  font-weight:bold;
+  z-index:10;
+}
+
+/* รูป */
+.candidate-card img,
+.no-vote-card img{
+  width:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* รูปผู้สมัคร */
+.candidate-card img{
+  height:245px;
+}
+
+/* ข้อมูล */
+.candidate-info{
+  padding:10px;
+  text-align:center;
+}
+.candidate-info h2{
+  margin:0;
+  font-size:1.05rem;
+}
+.candidate-info p{
+  margin-top:4px;
+  color:#007bff;
+  font-size:1.0rem;
+}
+
+/* เบอร์ 5 ไม่ประสงค์ลงคะแนน */
+.no-vote-card{
+  width:300px;
+  height:320px;
+    left:50px;
+    top:-30px;
+  background:linear-gradient(135deg,#ff4d4d,#b30000);
+  color:white;
+  border-radius:20px;
+  box-shadow:0 12px 28px rgba(0,0,0,.25);
+  cursor:pointer;
+  transition:.25s;
+  position:relative;
+  margin-top: 160px;
+  overflow:hidden; /* 🔥 สำคัญ */
+}
+.no-vote-card:hover{
+  transform:translateY(-5px);
+}
+
+.no-vote-card .candidate-no{
+  background:white;
+  color:#b30000;
+}
+
+/* รูปเบอร์ 5 */
+.no-vote-card img{
+  height:240px;
+}
+
+.no-vote-card .candidate-info p{
+  color:#ffecec;
+}
+
+/* หน้าจอล็อก */
+#lock-screen{
+  display:block;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  color:white;
+  z-index:3000;
+  text-align:center;
+  padding-top:18vh;
+}
+</style>
+</head>
+
+<body>
+
+<img src="6.png" class="school-logo">
+
+<div id="lock-screen">
+  <div style="font-size:80px">🔒</div>
+  <h1>กำลังเชื่อมต่อระบบ</h1>
+</div>
+
+<h1 style="text-align:center">🗳️ เชิญลงคะแนนเลือกสภานักเรียน</h1>
+<p style="text-align:center">คลิกเลือกผู้สมัคร</p>
+
+<div class="main-layout">
+
+  <!-- ผู้สมัคร 1–4 -->
+  <div class="candidate-container">
+
+    <div class="candidate-card" onclick="submitVote(1)">
+      <img src="n1.JPG">
+      <div class="candidate-info">
+        <h2>เบอร์ 1</h2>
+        <p>พรรคใจมารวมกัน</p>
+      </div>
+    </div>
+
+    <div class="candidate-card" onclick="submitVote(2)">
+      <img src="n2.JPG">
+      <div class="candidate-info">
+        <h2>เบอร์ 2</h2>
+        <p>พรรคใจไว้ที่เรา(PJWTR)</p>
+      </div>
+    </div>
+
+    <div class="candidate-card" onclick="submitVote(3)">
+      <img src="n3.JPG">
+      <div class="candidate-info">
+        <h2>เบอร์ 3</h2>
+        <p>พรรคเพื่อน้อง พี่พร้อมพัฒนา</p>
+      </div>
+    </div>
+
+    <div class="candidate-card" onclick="submitVote(4)">
+      <img src="n4.JPG">
+      <div class="candidate-info">
+        <h2>เบอร์ 4</h2>
+        <p>พรรคก้าวสั้นๆแต่มั่นคง(PKSM)</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- เบอร์ 5 -->
+  <div class="no-vote-card" onclick="submitVote(0)">
+    <div class="candidate-no">❌</div>
+    <img src="UN.JPG">
+    <div class="candidate-info">
+      <h2>ไม่ประสงค์ลงคะแนน</h2>
+      <p>งดออกเสียง</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbyeUfP18-a_KUJ7cw-DF53uP09622ExJijPMhh9D1gXFNE5AUV8-OvWMfqQ7PyvztnW/exec";
+
+let canVote=false;
+let hasVoted=false;
+let votedThisRound=false;
+
+setInterval(()=>{
+  fetch(scriptURL)
+    .then(r=>r.text())
+    .then(status=>{
+      status=status.trim();
+      if(status==="OPEN" && !votedThisRound){
+        canVote=true;
+        hasVoted=false;
+        document.getElementById('lock-screen').style.display="none";
+      }
+      if(status==="CLOSE"){
+        canVote=false;
+        votedThisRound=false;
+        showLock("🔒 คูหายังไม่เปิด","รอเจ้าหน้าที่");
+      }
+    });
+},1000);
+
+function submitVote(n){
+  if(!canVote || hasVoted) return;
+
+  hasVoted=true;
+  canVote=false;
+  votedThisRound=true;
+
+  showLock("✅ บันทึกคะแนนแล้ว","กรุณาออกจากคูหา");
+
+  fetch(scriptURL,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:"candidate="+n
+  });
+
+  setTimeout(()=>{
+    showLock("🔒 รอการเปิดรอบถัดไป","กรุณารอครูกดเปิด");
+  },3000);
+}
+
+function showLock(title,desc){
+  const ls=document.getElementById('lock-screen');
+  ls.style.display="block";
+  ls.innerHTML=`
+    <div style="font-size:80px">${title.startsWith("✅")?"✅":"🔒"}</div>
+    <h1>${title}</h1>
+    <p style="font-size:1.2rem">${desc}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
